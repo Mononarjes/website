@@ -1,0 +1,56 @@
+{%extends "website/layout.html"%}
+
+  {% block body%}
+
+  {% if user.is_authenticated %}
+
+  سلام, {{user.username}}! خوش آمدید :)
+
+  <section id="home-articles">
+    <div class="container">
+      <div class="articles-container">
+
+        <h2><i class="arrow left"></i>
+          <i class="arrow left"></i>
+          لیست اخبار 
+        </h2>
+
+
+        {% for post in allposts %}
+
+        <article class="item">
+          <div class="imag" >
+            <div class="top-left">{{post.date.date}}</div>
+            {% if post.image %}
+              <img src="{{ post.image.url }}">
+            {% endif %}
+          </div>
+          <div class="textpart">
+            <h3>
+            <a href="{% url 'related' post.id %}"> {{post.title}} </a> 
+            {% if post.author == user %}
+              <small><a href="{% url 'editpostt' post.id %}"> --ویرایش-- </a></small>
+              <small><a href="{% url 'deletepostt' post.id %}"> --حذف-- </a></small>
+            {% endif %}
+            </h3>
+              {{ post.post_body | safe | truncatewords:30}}
+            <span><a href="{% url 'related' post.id %}">ادامه مطلب</a></span>
+          </div>
+        </article>
+
+        {%endfor%}
+        {% include "website/pagination.html" with articles=allposts  %}
+
+      </div>
+    </div>
+
+  </section>
+
+  {% else %}
+
+  شما به این صفحه دسترسی ندارید!
+
+  {% endif %}
+    
+    
+  {% endblock%}

@@ -1,0 +1,21 @@
+{%extends "website/layout.html"%}
+
+{% block body %}
+
+{% if user.is_authenticated and post.author == user %}
+<h1>ویرایش کردن پست </h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <button>ویرایش</button>
+</form>
+{% else %}
+    <br><br><br><br><br>
+    <h1>شما به این صفحه دسترسی ندارید!</h1>
+    <br><br><br><br><br>
+{% endif %}
+
+{% endblock %}
+

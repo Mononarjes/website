@@ -1,0 +1,17 @@
+{%extends "website/layout.html"%}
+
+{% block body %}
+
+{% if user.is_authenticated and post.author == user %}
+<h1>حذف پست. مطمئن هستید؟ </h1>
+<h3> {{ post.title }}</h3>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <button>حذف</button>
+</form>
+{% else %}
+    شما به این صفحه دسترسی ندارید!
+{% endif %}
+
+{% endblock %}
+

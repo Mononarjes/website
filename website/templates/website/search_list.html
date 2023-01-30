@@ -1,0 +1,57 @@
+{%extends "website/layout.html"%}
+{% load static %}
+{% block title %}جستجو{% endblock %}
+  {% block body%}
+    <section id="home-articles">
+      <div class="container">
+        <div class="articles-container">
+
+          <h2><i class="arrow left"></i>
+            <i class="arrow left"></i>
+            نتایج جستجوی عبارت "{{searched}}"
+          </h2>
+
+           {% for article in articles %}
+
+          <article class="item">
+
+            <div class="imag">
+              <img src="{{article.image.url}}" alt="{{article.title}}" />
+              <div class="top-left">{{article.date.date}}</div>
+            </div>
+            <div class="textpart">
+              <h3>
+              <a href="{% url 'related' article.id %}">{{article.title}} </a>
+              </h3>
+              <p>
+                {{article.post_body|safe|striptags|truncatewords:30}}</p>
+
+              </p>
+              <span><a href="{% url 'related' article.id %}">ادامه مطلب</a></span>
+            </div>
+          </article>
+            {% endfor %}
+
+          <div class="pagination">
+              <span class="step-links">
+              {% if articles.has_previous %}
+                <a href="?page=1{% if searched %}&searched={{searched}}{% endif %}" style="margin:1rem">&laquo; صفحه1</a>
+                <a href="?page={{ articles.previous_page_number }}{% if searched %}&searched={{searched}}{% endif %}"style="margin:1rem">قبلی</a>
+                {% endif %}
+
+              صفحه {{ articles.number }} از {{ articles.paginator.num_pages }}
+
+            {% if articles.has_next %}
+                <a href="?page={{ articles.next_page_number }}{% if searched %}&searched={{searched}}{% endif %}"style="margin:1rem">بعدی</a>
+                <a href="?page={{ articles.paginator.num_pages }}{% if searched %}&searched={{searched}}{% endif %}"style="margin:1rem">آخرین صفحه &raquo;</a>
+            {% endif %}
+            </span>
+          </div>
+            
+        </div>
+
+      </div>
+
+    </section>
+    
+  {% endblock%}

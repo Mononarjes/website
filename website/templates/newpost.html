@@ -1,0 +1,18 @@
+{%extends "website/layout.html"%}
+
+{% block body %}
+
+{% if user.is_authenticated %}
+<h1> اضافه کردن پست </h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <button>تائید</button>
+</form>
+{% else %}
+    شما به این صفحه دسترسی ندارید!
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{%extends "website/layout.html"%}
+
+{% block body %}
+
+{% if user.is_authenticated %}
+
+<h1> اضافه کردن کامنت </h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>تائید</button>
+</form>
+
+{% else %}
+<br><br><br><br><br>
+    <h1>برای افزودن کامنت باید وارد حساب کاربری خود شوید</h1>
+    <br><br><br><br><br>
+{% endif %}
+
+{% endblock %}

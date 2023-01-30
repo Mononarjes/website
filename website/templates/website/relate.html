@@ -1,0 +1,80 @@
+{%extends "website/layout.html"%}
+{% load static %}
+{% block title %} {{article.title}}{% endblock %}
+  {% block body%}
+
+        <div class="container">
+            <div class="card">
+                <div class="imagebox">
+                        <img src="{{article.image.url}}" alt="{{article.title}}">
+                        {% if article.author == user %}
+                          <small><a href="{% url 'editpostt' article.id %}"> --ویرایش-- </a></small>
+                          <small><a href="{% url 'deletepostt' article.id %}"> --حذف-- </a></small>
+                        {% endif %}
+                </div>
+
+                            <div class="top-left">{{article.date}}</div>
+                            <h3>
+                                {{article.title}}
+                            </h3>
+                         <p>{{article.post_body| safe | linebreaks}}</p>
+                          <span>views = {{article.views_number}}</span> <span>writer = {{article.author.username}}</span>
+                          <br><br><br>
+                          <h2><u>کامنت ها . . .</u></h2>
+                            {{article.comments_number}}
+                          {% if not article.comments.all %}
+                            کامنتی نیست. <a href="{% url 'add_comment' article.id %}"> [اضافه کردن]</a>
+                          {% else %}
+                            {% for comment in article.comments.all %}
+                              {% if comment.accepted %}
+                                {% if comment.root.author %}
+                                  <b> | {{ comment.root.author }} - {{ comment.root.comment_body | slice:":45" }}...</b><br>
+                                {% endif %}
+                                <b> {{ comment.author }} - {{ comment.date }} : </b> <br>  {{ comment.comment_body }}<br>
+                                <a href="{% url 'reply_comment' article.id comment.id %}">پاسخ</a>
+                                <hr>
+                              {% endif %}
+
+                              {% if article.author == user and comment.accepted == False %}
+                                {{ comment.author }} <br> {{ comment.comment_body }}
+                                <form method="POST" action="{% url 'submit_comment' comment.id %}">
+                                {% csrf_token %}
+                                <button>تائید</button>
+                                </form>
+                                <hr>
+                              {% endif %}
+                            {% endfor %}
+                            <a href="{% url 'add_comment' article.id %}"> [اضافه کردن کامنت]</a>
+                          {% endif %}
+
+            </div>
+            <div class="sidebar">
+              <h3>
+                    <i class="arrow left"></i>
+                    <i class="arrow left"></i>
+                    تازه ترین خبر ها
+              </h3>
+
+              {% for new in new_articles %}
+          <div class="box">
+            <img src="{{new.image.url}}" alt="{{new.title}}"/>
+            <div class="text">
+              <h4>
+                {{new.title}}
+              </h4>
+              <p>
+                {{new.post_body|safe|striptags|truncatewords:30}}
+              </p>
+              <div>
+                <span><a href="{% url 'related' new.id %}">ادامه مطلب</a></span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+
+            </div>
+  
+        </div>
+
+{% endblock %}

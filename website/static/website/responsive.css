@@ -1,0 +1,101 @@
+#navbar img{
+    inline-size: 35px;
+    margin-left: 7px;
+    
+}
+#navbar{
+    padding: 0.5rem;
+}
+#home-articles .articles-container{
+    width: 100%;
+  }
+.sidebar{
+    width: 90%;
+    margin: 0 7%;   
+}
+.sidebar h4{
+    font-size: 20px;
+    padding: 1rem;
+}
+.card{
+    width: 100%;
+  }
+
+  #headerh .container{
+      display: flex;
+      flex-direction: column;
+  }
+  .articles-contain{
+    width: 100%;
+  }
+  #news_sum .container .side{
+    
+    padding:1rem;
+    width: 100%;
+  }
+  @media (max-width: 500px) {
+    #navbar{
+        flex-direction: column;
+        padding: 0.25rem;
+    }
+    #navbar .log {
+        font-size: 18px;
+        padding: 0.5rem;
+    }
+    #navbar ul{
+        font-size: 14px;
+    }
+    #navbar ul li a {
+        padding: 0.3rem;
+        margin: 0.3rem;
+      }
+      .search {
+        width: 100%;
+      }
+      .search input {
+        font-size: 10px;
+        padding-right: 3px;
+        padding-left: 12px;
+        }
+        .search button {
+          height: 30px;
+          left: 1px;
+          font-size: 13px; 
+        }
+
+        .headsecond #headcardd{
+            display: flex;
+            flex-direction: column;
+        }
+        .articles-contain .cardd{
+            display: flex;
+            flex-direction: column;
+        }
+        #news_sum .container{
+            padding: 0;
+        }
+
+        #home-articles .articles-container .item{
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+        .card{
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0.5 0rem;
+        }
+        .card .imagebox{
+            width: 100%;
+            padding: 0;
+        }
+        .sidebar .box{
+            display: flex;
+            flex-direction: column;
+        }
+        #thefooter .footer-container{
+            display: flex;
+            flex-direction: column;
+        }
+  }

@@ -1,0 +1,152 @@
+{%extends "website/layout.html"%}
+{% load static %}
+{% block title %}لیست اخبار{% endblock %}
+  {% block body%}
+    <section id="home-articles">
+      <div class="container">
+        <div class="articles-container">
+
+          <h2><i class="arrow left"></i>
+            <i class="arrow left"></i>
+            لیست اخبار 
+          </h2>
+           {% for article in articles %}
+
+          <article class="item">
+
+            <div class="imag">
+              <img src="{{article.image.url}}" alt="{{article.title}}" />
+              <div class="top-left">{{article.date.date}}</div>
+            </div>
+            <div class="textpart">
+              <h3>
+              <a href="{% url 'related' article.id %}">{{article.title}} </a>
+                {% if article.author == user %}
+              <small><a href="{% url 'editpostt' article.id %}"> --ویرایش-- </a></small>
+              <small><a href="{% url 'deletepostt' article.id %}"> --حذف-- </a></small>
+              {% endif %}
+              </h3>
+              <p>
+                {{article.post_body|safe|striptags|truncatewords:30}}</p>
+
+              </p>
+              <span><a href="{% url 'related' article.id %}">ادامه مطلب</a></span>
+            </div>
+          </article>
+            {% endfor %}
+
+          <div class="pagination">
+            <span class="step-links">
+            {% if articles.has_previous %}
+                <a href="?page=1&page2={{best_articles.number}}&page3={{more_comments.number}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}" style="margin:1rem">&laquo; صفحه1</a>
+                <a href="?page={{articles.previous_page_number}}&page2={{best_articles.number}}&page3={{more_comments.number}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}"style="margin:1rem">قبلی</a>
+            {% endif %}
+
+            صفحه {{ articles.number }} از {{ articles.paginator.num_pages }}
+
+            {% if articles.has_next %}
+                <a href="?page={{articles.next_page_number}}&page2={{best_articles.number}}&page3={{more_comments.number}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}"style="margin:1rem">بعدی</a>
+                <a href="?page={{articles.paginator.num_pages}}&page2={{best_articles.number}}&page3={{more_comments.number}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}"style="margin:1rem">آخرین صفحه &raquo;</a>
+            {% endif %}
+            </span>
+            </div>
+
+        </div>
+
+
+
+        <div class="sidebar">
+          <div class="filter">
+          <form style="margin:0.5rem" method="GET">
+                  {% csrf_token %}
+                  {{form}}
+              <button type="submit" value="create">--filter--</button>
+          </form>
+
+          <form method="GET">
+            <label >از :</label><input type="date" name="min" value="{{min}}">
+            <label >تا :</label><input type="date" name="max" value="{{max}}">
+            <button type="submit" value="create">submit</button>
+          </form>
+        </div>
+
+          <h3>
+                <i class="arrow left"></i>
+                <i class="arrow left"></i>
+                پربازدید ترین ها
+          </h3>
+          {% for best in best_articles %}
+          <div class="box">
+            <img src="{{best.image.url}}" alt="{{best.title}}"/>
+            <div class="text">
+              <h4>
+                {{best.title}}
+              </h4>
+              <p>
+                {{best.post_body|safe|striptags|truncatewords:30}}
+              </p>
+              <div>
+                <span><a href="{% url 'related' best.id %}">ادامه مطلب</a></span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          <div class="pagination">
+            <span class="step-links">
+            {% if best_articles.has_previous %}
+                <a href="?page={{articles.number}}&page2=1&page3={{more_comments.number}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}" style="margin:1rem">&laquo; صفحه1</a>
+                <a href="?page={{articles.number}}&page2={{best_articles.previous_page_number}}&page3={{more_comments.number}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}"style="margin:1rem">قبلی</a>
+            {% endif %}
+
+            صفحه {{ best_articles.number }} از {{ best_articles.paginator.num_pages }}
+
+            {% if best_articles.has_next %}
+                <a href="?page={{articles.number}}&page2={{best_articles.next_page_number}}&page3={{more_comments.number}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}"style="margin:1rem">بعدی</a>
+                <a href="?page={{articles.number}}&page2={{best_articles.paginator.num_pages}}&page3={{more_comments.number}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}"style="margin:1rem">آخرین صفحه &raquo;</a>
+            {% endif %}
+            </span>
+          </div>
+          <h3>
+                <i class="arrow left"></i>
+                <i class="arrow left"></i>
+                پرکامنت ترین ها
+        </h3>
+          {% for more in more_comments %}
+          <div class="box">
+            <img src="{{more.image.url}}" alt="{{more.title}}"/>
+            <div class="text">
+              <h4>
+                {{more.title}}
+              </h4>
+              <p>
+                {{more.post_body|safe|striptags|truncatewords:30}}
+              </p>
+              <div>
+                <span><a href="{% url 'related' more.id %}">ادامه مطلب</a></span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          <div class="pagination">
+            <span class="step-links">
+            {% if more_comments.has_previous %}
+                <a href="?page={{articles.number}}&page2={{best_articles.number}}&page3=1&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}" style="margin:1rem">&laquo; صفحه1</a>
+                <a href="?page={{articles.number}}&page2={{best_articles.number}}&page3={{more_comments.previous_page_number}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}"style="margin:1rem">قبلی</a>
+            {% endif %}
+
+            صفحه {{ more_comments.number }} از {{ more_comments.paginator.num_pages }}
+
+            {% if more_comments.has_next %}
+                <a href="?page={{articles.number}}&page2={{best_articles.number}}&page3={{more_comments.next_page_number}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}"style="margin:1rem">بعدی</a>
+                <a href="?page={{articles.number}}&page2={{best_articles.number}}&page3={{more_comments.paginator.num_pages}}&field={{temp}}{% if min %}&min={{min}}{% endif %}{% if max %}&max={{max}}{% endif %}"style="margin:1rem">آخرین صفحه &raquo;</a>
+            {% endif %}
+            </span>
+          </div>
+        </div>
+
+
+      </div>
+
+    </section>
+    
+  {% endblock%}
